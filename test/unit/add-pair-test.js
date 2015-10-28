@@ -59,4 +59,10 @@ describe("addPair", function() {
     assert.deepEqual(f.serialize(), {_method: "post"});
   });
 
+  it("should not allow a key with an empty value", function() {
+    f.addPair({name: "a", value: "b"});
+    f.addPair({name: "c", value: undefined});
+    assert.deepEqual(f.serialize(), {a: "b"});
+  });
+
 });

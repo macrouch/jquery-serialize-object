@@ -1,3 +1,5 @@
+//https://github.com/macrouch/jquery-serialize-object
+
 /**
  * jQuery serializeObject
  * @copyright 2014, macek <paulmacek@gmail.com>
@@ -43,8 +45,23 @@
 
     // private API
     function build(base, key, value) {
-      base[key] = value;
-      return base;
+      if (value) {
+        specialKeys = {}; // special keys here
+
+        if (specialKeys[key] !== undefined) {
+          base[specialKeys[key]] = value;
+        } else {
+          // CamelCase the keys
+          camelKey = key.toString().replace(/[\-_\s]+(.)?/g, function(match, chr) {
+            return chr ? chr.toUpperCase() : '';
+          });
+          camelKey = camelKey.substr(0, 1).toUpperCase() + camelKey.substr(1);
+
+          base[camelKey] = value;
+        }
+        return base;
+      }
+      return {};
     }
 
     function makeObject(root, value) {
